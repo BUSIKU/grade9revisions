@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff0000, #008751, #f68d2e, #000000); /* Red, Green, Orange, Black */
+            color: white;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .eagle {
+            width: 50px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        #question-container {
+            margin-top: 20px;
+        }
+
+        #answer-input {
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <nav>
+            <a href="#">Computer Studies</a>
+            <a href="#">Religious Education</a>
+            <a href="#">Business Studies</a>
+            <a href="#">Agric Sci</a>
+            <a href="#">English Language</a>
+        </nav>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Flag_of_Zambia.svg" alt="Eagle" class="eagle">
+    </div>
+
+    <div class="quiz-container">
+        <h1>History Quiz</h1>
+        <div id="question-container">
+            <p id="question-text"></p>
+            <input type="text" id="answer-input" placeholder="Type your answer here">
+            <button onclick="nextQuestion()">Next</button>
+        </div>
+        <div id="result-container" class="hidden">
+            <h2>Your Score: <span id="score"></span></h2>
+            <h3>Correct Answers:</h3>
+            <ul id="correct-answers"></ul>
+            <button onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Developed By Engr. Busiku Kapikanya | <a href="https://wa.me/260978319400" target="_blank">0978319400</a> | Luwingu</p>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "Name the place where the remains of Zinjanthropus were discovered.", answer: "Olduvai Gorge" },
+            { question: "The Bushmen of Australia are known as...", answer: "Aborigines" },
+            { question: "Which people are sometimes called Bene-mukuni?", answer: "The Lenje" },
+            { question: "Who were Kazembe’s middlemen in the western side of his kingdom?", answer: "The Imbangala" },
+            { question: "What Stone Age period is referred to as the hand axe culture?", answer: "The early stone age" },
+            { question: "Which Chitimukulu introduced the idea of concentration of power in the crocodile clan?", answer: "ChilesheChepela" },
+            { question: "What name was given to the Lozi national council?", answer: "The Mulongwanji" },
+            { question: "What do we call the science of studying ancient remains?", answer: "Archaeology" },
+            { question: "Historical remains discovered at Isamu Pati and Kalundu in Southern province belong to?", answer: "The early iron age people" },
+            { question: "Microliths were tools associated with?", answer: "the late stone age" },
+            { question: "The first European missionary to establish a mission at Kuruman among the Tswana people was?", answer: "Robert Moffat" },
+            { question: "Which missionary society was very active in Northern Province of Zambia?", answer: "The white fathers" },
+            { question: "Prince Henry the navigator built a school for sailors at a place called?", answer: "Sagres" },
+            { question: "Who was the last governor of northern Rhodesia?", answer: "Sir Evelyn Hone" },
+            { question: "The system by which the British ruled their African territories through local chiefs is called?", answer: "Indirect rule" },
+            { question: "Who became Litunga in 1780?", answer: "Mulambwa" },
+            { question: "Which Europeans were the first to touch the cape?", answer: "The Portuguese" },
+            { question: "The god of the San people was known as?", answer: "Kegan" },
+            { question: "People who only keep animals such as cattle and sheep are referred to as?", answer: "Pastoralists" },
+            { question: "Which Europeans arrived at the cape in 1652?", answer: "The Dutch" },
+            { question: "The movement of the Boers from the cape into the interior of southern Africa in the mid-19th century is called?", answer: "The great trek" },
+            { question: "The leader of the Lozi people when they left Katanga was?", answer: "Mbuyuwamwambwa" },
+            { question: "Which natural event took place in 1835 when Zwangendaba and the Ngoni people crossed the Zambezi river?", answer: "Eclipse of the sun" },
+            { question: "Which Portuguese sailor reached the cape in 1487?", answer: "Bartholomew Diaz" },
+            { question: "Which European sailor reached Calicut, India in 1498?", answer: "Vasco da Gama" },
+            { question: "The man who led the Ngoni people into eastern Zambia after the death of Zwangendaba was?", answer: "Mpezeni" },
+            { question: "Which talks led to the independence of Zimbabwe?", answer: "The Lancaster house talks" },
+            { question: "Who was the last governor of Northern Rhodesia?", answer: "Sir Evelyn Hone" },
+            { question: "The commission which was established to look at the future of the central African federation is called?", answer: "Monckton commission" },
+            { question: "The administrative capital of the central African federation was?", answer: "Salisbury" },
+            { question: "Lusaka became capital of northern Rhodesia in?", answer: "1935" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const correctAnswers = [];
+
+        function showQuestion() {
+            const questionText = document.getElementById('question-text');
+            questionText.textContent = questions[currentQuestionIndex].question;
+        }
+
+        function nextQuestion() {
+            const answerInput = document.getElementById('answer-input');
+            const userAnswer = answerInput.value.trim().toLowerCase();
+            const correctAnswer = questions[currentQuestionIndex].answer.toLowerCase();
+
+            correctAnswers.push(`${questions[currentQuestionIndex].question} - ${questions[currentQuestionIndex].answer}`);
+
+            if (userAnswer === correctAnswer) {
+                score++;
+            }
+
+            currentQuestionIndex++;
+            answerInput.value = '';
+
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                displayResult();
+            }
+        }
+
+        function displayResult() {
+            document.getElementById('question-container').classList.add('hidden');
+            document.getElementById('result-container').classList.remove('hidden');
+            document.getElementById('score').textContent = `${score} / ${questions.length}`;
+
+            const correctAnswersList = document.getElementById('correct-answers');
+            correctAnswersList.innerHTML = '';
+            correctAnswers.forEach(answer => {
+                const li = document.createElement('li');
+                li.textContent = answer;
+                correctAnswersList.appendChild(li);
+            });
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 
+ 0;
+            correctAnswers.length = 0;
+            document.getElementById('question-container').classList.remove('hidden');
+            document.getElementById('result-container').classList.add('hidden');
+            showQuestion();
+        }
+
+        // Start the quiz by showing the first question
+        showQuestion();
+    </script>
+
+</body>
+</html>
