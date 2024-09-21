@@ -165,6 +165,26 @@
         .dropdown:hover .dropdown-content {
             display: block;
 
+        /*WhatsApp icon*/
+                .whatsapp-floater {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .whatsapp-floater img {
+            width: 35px;
+            height: 35px;
+
     </style>
 </head>
 <body>
@@ -191,7 +211,9 @@
     </marquee>
     <div class="quiz-container">
         <h1>History Quiz</h1>
-         <h3> All First letters when typing your answers should be capital.</h3>
+        <marquee class="marquee" behavior="scroll" direction="left" scrollamount="5">
+         <h3> All First letters when typing your answers should be capitalised.</h3>
+        </marquee>
         <div id="question-container">
             <p id="question-text"></p>
             <input type="text" id="answer-input" placeholder="Type your answer here">
